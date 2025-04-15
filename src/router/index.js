@@ -1,68 +1,96 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router'
-import home from '../views/home.vue'
-import newsList from '../views/news/list.vue'
-import newsDetail from '../views/news/detail.vue'
-import consultantDetail from '../views/news/consultantDetail.vue'
-import readDetail from '../views/news/readDetail.vue'
-import search from '../views/search/index.vue'
-import commander from '../views/commander/index.vue'
-import mailbox from '../views/mailbox/index.vue'
-import sword from '../views/sword/index.vue'
+import Router from 'vue-router'
 
-Vue.use(VueRouter)
+Vue.use(Router)
 
-const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: home,
-  },
-  {
-    path: '/newsList',
-    name: 'newsList',
-    component: newsList,
-  },
-  {
-    path: '/newsDetail',
-    name: 'newsDetail',
-    component: newsDetail,
-  },
-  {
-    path: '/consultantDetail',
-    name: 'consultantDetail',
-    component: consultantDetail,
-  },
-  {
-    path: '/readDetail',
-    name: 'readDetail',
-    component: readDetail,
-  },
-  {
-    path: '/search',
-    name: 'search',
-    component: search,
-  },
-  {
-    path: '/commander',
-    name: 'commander',
-    component: commander,
-  },
-  {
-    path: '/mailbox',
-    name: 'mailbox',
-    component: mailbox,
-  },
- {
-   path: '/sword',
-       name: 'sword',
-     component: sword,
- }
+import Layout from '@/layout'
+import system from "@/router/modules/system";
+import demo from "@/router/modules/demo";
+import user from "@/router/modules/user";
+import complaints from "@/router/modules/complaints";
+import units from "@/router/modules/units";
+import content from "@/router/modules/content";
+import carouselImage from "@/router/modules/carouselImage";
+import chiefMailbox from "@/router/modules/chiefMailbox";
+import disciplineInspection from "@/router/modules/disciplineInspection";
+import strongMilitaryVideo from "@/router/modules/strongMilitaryVideo";
+import friendshipLink from "@/router/modules/friendshipLink";
+import comprehensiveMailbox from "@/router/modules/comprehensiveMailbox";
+import maintainRouter from "@/router/modules/maintain";
+import person from "@/router/modules/person";
+
+export const constantRoutes = [
+    demo,
+    system,
+    user,
+    complaints,
+    units,
+    content,
+    carouselImage,
+    chiefMailbox,
+    disciplineInspection,
+    strongMilitaryVideo,
+    friendshipLink,
+    comprehensiveMailbox,
+    maintainRouter,
+    person,
+    {
+        path: '/404',
+        component: () => import('@/views/error-page/404'),
+        hidden: true
+    },
+    {
+        path: '/register',
+        component: () => import('@/views/login/register'),
+        hidden: true
+    },
+    {
+        path: '/login',
+        component: () => import('@/views/login/index'),
+        hidden: true
+    },
+
+    {
+        path: '/auth-redirect',
+        component: () => import('@/views/login/auth-redirect'),
+        hidden: true
+    },
+    {
+        path: '/401',
+        component: () => import('@/views/error-page/401'),
+        hidden: true
+    },
+    {
+        path: '/',
+        component: Layout,
+        redirect: '/dashboard',
+        children: [
+            {
+                path: 'dashboard',
+                component: () => import('@/views/dashboard/index'),
+                name: 'Dashboard',
+                meta: {title: '主页', icon: 'dashboard', affix: true}
+            },
+        ]
+    },
+    {path: '*', redirect: '/404', hidden: true}
 ]
 
-const router = new VueRouter({
-  routes,
-    // linkActiveClass: 'active',
+export const asyncRoutes = []
+
+const createRouter = () => new Router({
+    // mode: 'history', // require service support
+    //mode: 'history',
+    scrollBehavior: () => ({y: 0}),
+    routes: constantRoutes
 })
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+    const newRouter = createRouter()
+    router.matcher = newRouter.matcher // reset router
+}
 
 export default router

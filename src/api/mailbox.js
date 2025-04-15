@@ -1,55 +1,54 @@
 import request from "@/utils/request";
+
 /**
- * @description 首长列表
+ * 管理后台查询信件列表
  * @returns {*}
+ * @param params
  */
-export function getChiefListApi() {
+export function list(params){
     return request({
-        url: '/adminUser/getChiefList',
-        method: 'get'
-    })
-}
-/**
- * @description 留言说明/网站配置
- * @returns {*}
- */
-export function getWebsiteDetailApi(params) {
-    return request({
-        url: '/websiteConfig/detail',
-        method: 'get',
+        url:'/mailbox/list',
+        method:'GET',
         params
     })
 }
+
 /**
- * @description 留言列表
+ * @description 删除信件
+ * @param id
  * @returns {*}
  */
-export function getWebiteListApi(params) {
+export function deleteRow(id){
     return request({
-        url: '/mailbox/webList',
-        method: 'get',
-        params
+        url:'/mailbox/delete',
+        method:'GET',
+        params:{id}
     })
 }
+
+
 /**
- * @description 新增留言
+ * @description 回复信件并修改状态
+ * @param data
  * @returns {*}
  */
-export function saveOrUpdateApi(data) {
+export function updateStatus(data){
     return request({
-        url: '/mailbox/saveOrUpdate',
-        method: 'Post',
-        data
+        url:'/mailbox/reply',
+        method:'POST',
+        params:data
     })
 }
+
 /**
- * @description 信箱详情
+ * 查询信件详情
  * @returns {*}
+ * @param params
  */
-export function getWebiteDetailsApi(params) {
+export function getInfo(params){
     return request({
-        url: '/sysCategory/details',
-        method: 'get',
+        url:'/mailbox/info',
+        method:'GET',
         params
     })
 }

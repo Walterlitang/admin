@@ -1,4 +1,4 @@
-//import {login, logout,getAdminUser} from '@/api/login'
+import {login, logout,getAdminUser} from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 import Cookies from 'js-cookie'
@@ -36,7 +36,7 @@ const actions = {
         commit('SET_TOKEN', data.token)
         Cookies.set('UserInfo', JSON.stringify(data))
         setToken(data.token)
-        resolve()
+        resolve(data)
       }).catch(error => {
         reject(error)
       })
@@ -45,12 +45,12 @@ const actions = {
   getAdminInfo({ commit }) {
     return new Promise((resolve, reject) => {
       getAdminUser().then(data => {
-        data.roles = [data.roles]
-        const { roles, real_name } = data
+        data.roles = [data.id]
+        const { roles, roleName } = data
         commit('SET_ROLES', roles)
-        commit('SET_NAME', real_name)
+        commit('SET_NAME', roleName)
         commit('SET_AVATAR', 'http://kaifa.crmeb.net/system/images/admin_logo.png')
-        commit('SET_PERMISSIONS', data.role.rules) //权限标识
+        commit('SET_PERMISSIONS', data.permissionList) //权限标识
         resolve(data)
       }).catch(error => {
         reject(error)
@@ -59,7 +59,7 @@ const actions = {
   },
   logout({ commit, dispatch }) {
     return new Promise((resolve, reject) => {
-      logout().then(() => {
+      // logout().then(() => {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         commit('SET_PERMISSIONS', [])
@@ -69,7 +69,7 @@ const actions = {
         sessionStorage.removeItem('token')
         dispatch('tagsView/delAllViews', null, { root: true })
         resolve()
-      })
+      // })
     })
   },
   resetToken({ commit }) {
