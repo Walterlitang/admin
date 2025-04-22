@@ -71,15 +71,8 @@
       </el-row>
       <el-row>
         <el-col :span="12">
-          <el-form-item label="所属单位：" prop="departmentId" v-if="role[0]===1">
-            <el-select v-model="form.departmentId" clearable placeholder="请选择" style="width: 300px;">
-              <el-option
-                  v-for="item in departmentTitleList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id">
-              </el-option>
-            </el-select>
+          <el-form-item label="审核人：" prop="departmentId" v-if="role[0]===1">
+            <el-input v-model="form.reviewer" placeholder="请输入审核人" maxlength="30" style="width: 300px;"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
